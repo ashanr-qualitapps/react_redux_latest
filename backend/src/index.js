@@ -6,6 +6,9 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
 const dashboardRoutes = require('./routes/dashboard');
+const productRoutes = require('./routes/products');
+const orderRoutes = require('./routes/orders');
+const orderItemRoutes = require('./routes/orderItems');
 
 dotenv.config();
 
@@ -24,6 +27,9 @@ app.use(express.urlencoded({ extended: false }));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/order-items', orderItemRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

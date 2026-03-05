@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -14,9 +15,17 @@ function formatDate(dateStr) {
   if (!dateStr) return 'N/A'
   return new Date(dateStr).toLocaleDateString('en-US', {
     year: 'numeric',
-    month: 'long',
+    month: 'short',
     day: 'numeric',
   })
+}
+
+const STATUS_BADGE = {
+  pending: 'badge-warning',
+  processing: 'badge-info',
+  shipped: 'badge-primary',
+  delivered: 'badge-success',
+  cancelled: 'badge-danger',
 }
 
 function DashboardPage() {
@@ -59,6 +68,7 @@ function DashboardPage() {
   const stats = dashData?.stats || {}
   const profileUser = dashData?.user || {}
   const recentUsers = dashData?.recentUsers || []
+  const recentOrders = dashData?.recentOrders || []
 
   return (
     <div className="dashboard-container">
@@ -68,7 +78,7 @@ function DashboardPage() {
         <p>{stats.welcomeMessage || `Welcome, ${user?.name}!`}</p>
       </div>
 
-      {/* Stats Cards */}
+      {/* Stats Cards — 6 total */}
       <div className="stats-grid">
         <div className="stat-card">
           <div className="stat-icon blue">👥</div>
@@ -87,20 +97,42 @@ function DashboardPage() {
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon purple">🎯</div>
+          <div className="stat-icon purple">📦</div>
           <div className="stat-info">
-            <div className="stat-value sm">{(profileUser.role || 'user').toUpperCase()}</div>
-            <div className="stat-label">Your Role</div>
+            <div className="stat-value">{stats.totalProducts ?? 0}</div>
+            <div className="stat-label">Products</div>
           </div>
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon orange">📅</div>
+          <div className="stat-icon orange">🛒</div>
           <div className="stat-info">
-            <div className="stat-value sm">{formatDate(profileUser.memberSince)}</div>
-            <div className="stat-label">Member Since</div>
+            <div className="stat-value">{stats.totalOrders ?? 0}</div>
+            <div className="stat-label">Total Orders</div>
           </div>
         </div>
+
+        <div className="stat-card">
+          <div className="stat-icon blue">⏳</div>
+          <div className="stat-info">
+            <div className="stat-value">{stats.pendingOrders ?? 0}</div>
+            <div className="stat-label">Pending Orders</div>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-icon green">💰</div>
+          <div className="stat-info">
+            <div className="stat-value sm">${parseFloat(stats.totalRevenue || 0).toFixed(2)}</div>
+            <div className="stat-label">Revenue (Delivered)</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="quick-links">
+        <Link to="/products" className="btn btn-outline">📦 Manage Products</Link>
+        <Link to="/orders" className="btn btn-outline">🛒 Manage Orders</Link>
       </div>
 
       {/* Content Grid */}
@@ -108,7 +140,7 @@ function DashboardPage() {
         {/* Profile Card */}
         <div className="card">
           <div className="card-header">
-            <h2>Profile Information</h2>
+            <h2>Your Profile</h2>
             <span className="badge badge-success">Active</span>
           </div>
           <div className="card-body">
@@ -140,6 +172,39 @@ function DashboardPage() {
                 <span className="profile-value">{formatDate(profileUser.memberSince)}</span>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Recent Orders Card */}
+        <div className="card">
+          <div className="card-header">
+            <h2>Recent Orders</h2>
+            <Link to="/orders" className="btn btn-ghost btn-sm">View All</Link>
+          </div>
+          <div className="card-body">
+            {recentOrders.length > 0 ? (
+              <div className="users-list">
+                {recentOrders.map((o) => (
+                  <Link key={o._id} to={`/orders/${o._id}`} className="user-item" style={{ textDecoration: 'none' }}>
+                    <div className="user-item-avatar" style={{ background: 'linear-gradient(135deg, #fbbf24, #f59e0b)' }}>
+                      🛒
+                    </div>
+                    <div className="user-item-info">
+                      <div className="user-item-name">
+                        #{o._id.slice(-8).toUpperCase()}{' '}
+                        <span className={`badge ${STATUS_BADGE[o.status] || 'badge-info'}`} style={{ fontSize: '0.625rem' }}>
+                          {o.status}
+                        </span>
+                      </div>
+                      <div className="user-item-email">{o.user?.name || 'Unknown'}</div>
+                    </div>
+                    <div className="user-item-date">${parseFloat(o.totalAmount || 0).toFixed(2)}</div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <div className="empty-state">No orders yet</div>
+            )}
           </div>
         </div>
 

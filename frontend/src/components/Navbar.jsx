@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout, reset } from '../features/auth/authSlice'
 
@@ -24,6 +24,20 @@ function Navbar() {
         <Link to={user ? '/dashboard' : '/login'} className="navbar-brand">
           ⚡ ReactRedux App
         </Link>
+
+        {user && (
+          <div className="navbar-links">
+            <NavLink to="/dashboard" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
+              Dashboard
+            </NavLink>
+            <NavLink to="/products" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
+              Products
+            </NavLink>
+            <NavLink to="/orders" className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
+              Orders
+            </NavLink>
+          </div>
+        )}
 
         <div className="navbar-nav">
           {user ? (
