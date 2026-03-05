@@ -1,0 +1,29 @@
+meta {
+  name: Create Order Item
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/orderItems
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "order": "507f1f77bcf86cd799439011",
+    "product": "507f1f77bcf86cd799439012",
+    "quantity": 2,
+    "unitPrice": 99.99
+  }
+}
+
+docs {
+  Add an item to an existing order
+}

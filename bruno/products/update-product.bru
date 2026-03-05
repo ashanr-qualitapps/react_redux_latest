@@ -1,0 +1,28 @@
+meta {
+  name: Update Product
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{base_url}}/products/507f1f77bcf86cd799439011
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Wireless Headphones Pro",
+    "price": 249.99,
+    "stock": 45
+  }
+}
+
+docs {
+  Update an existing product (admin only)
+}

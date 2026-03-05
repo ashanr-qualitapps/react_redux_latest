@@ -1,0 +1,18 @@
+meta {
+  name: Delete Order Item
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{base_url}}/orderItems/507f1f77bcf86cd799439011
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+docs {
+  Remove an item from an order
+}

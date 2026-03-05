@@ -1,0 +1,18 @@
+meta {
+  name: Get Dashboard Stats
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/dashboard/stats
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+}
+
+docs {
+  Get dashboard statistics and analytics (admin only)
+}

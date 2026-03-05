@@ -260,14 +260,63 @@ npm run preview  # Preview production build
 
 ### Testing
 
-```bash
-# API Testing with curl
-curl -X GET http://localhost:5000/api/products \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+#### API Testing Collections
 
-# Frontend testing
+This project includes comprehensive API testing collections for both **Postman** and **Bruno**:
+
+- **`React-Redux-API.postman_collection.json`** - Complete Postman collection (recommended)
+- **`bruno/`** - Bruno folder-based collection
+- **`API-Testing-README.md`** - Detailed testing documentation
+
+##### Using Postman Collection
+
+1. **Import the collection**:
+   - Open Postman
+   - Click "Import" → "File"
+   - Select `React-Redux-API.postman_collection.json`
+
+2. **Configure environment**:
+   - Create new environment: `React Redux API`
+   - Set variable: `base_url = http://localhost:5000/api`
+
+3. **Test the APIs**:
+   - Start with **Authentication → Register/Login**
+   - Token is automatically saved for subsequent requests
+   - Test all endpoints with proper authentication
+
+##### Using Bruno Collection
+
+1. **Import the collection**:
+   - Open Bruno
+   - Click "Import Collection"
+   - Select the `bruno/` folder
+
+2. **Configure environments** in Bruno
+
+##### Manual Testing with curl
+
+```bash
+# Register user
+curl -X POST http://localhost:5000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"John Doe","email":"john@example.com","password":"password123"}'
+
+# Login (get token)
+curl -X POST http://localhost:5000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"john@example.com","password":"password123"}'
+
+# Get products (replace TOKEN with actual JWT)
+curl -X GET http://localhost:5000/api/products \
+  -H "Authorization: Bearer TOKEN"
+```
+
+#### Frontend Testing
+
+```bash
 cd frontend
-npm run build  # Test production build
+npm run build    # Test production build
+npm run preview  # Preview production build
 ```
 
 ## 🚢 Deployment

@@ -1,0 +1,27 @@
+meta {
+  name: Create Order
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/orders
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "shippingAddress": "123 Main St, City, State 12345",
+    "notes": "Please handle with care"
+  }
+}
+
+docs {
+  Create a new order
+}

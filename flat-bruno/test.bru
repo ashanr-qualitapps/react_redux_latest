@@ -1,0 +1,16 @@
+meta {
+  name: Test API
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:5000/api/health
+  headers {
+    Content-Type: application/json
+  }
+}
+
+docs {
+  Test request to check API connectivity
+}
